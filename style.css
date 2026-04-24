@@ -1,0 +1,385 @@
+/* ===================================================
+   SIMULATEUR DE ROBOT — Feuille de style
+   =================================================== */
+
+:root {
+  --bg-principal:    #1a1a2e;
+  --bg-secondaire:   #16213e;
+  --bg-element:      #0f3460;
+  --accent:          #e94560;
+  --couleur-robot:   #00d4ff;
+  --texte:           #e0e0e0;
+  --texte-dim:       #7a8fa6;
+  --succes:          #4caf50;
+  --erreur:          #f44336;
+  --avertissement:   #ff9800;
+  --rayon:           8px;
+  --ombre:           0 2px 12px rgba(0,0,0,0.5);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-principal);
+  color: var(--texte);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  min-height: 100vh;
+}
+
+/* --- En-tête ---------------------------------------- */
+header {
+  background: var(--bg-secondaire);
+  border-radius: var(--rayon);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--ombre);
+  border-left: 4px solid var(--accent);
+}
+
+header h1 {
+  font-size: 1.3rem;
+  color: var(--couleur-robot);
+}
+
+#statut-robot {
+  display: flex;
+  gap: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+}
+
+#statut-robot span {
+  background: var(--bg-element);
+  padding: 3px 10px;
+  border-radius: 4px;
+  color: var(--texte-dim);
+}
+
+/* --- Zone principale -------------------------------- */
+main {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+}
+
+/* --- Zone simulation (canvas) ----------------------- */
+#zone-simulation {
+  flex: 1;
+  background: var(--bg-secondaire);
+  border-radius: var(--rayon);
+  padding: 10px;
+  box-shadow: var(--ombre);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+#conteneur-canvas {
+  position: relative;
+}
+
+#canvas-dessus {
+  display: block;
+  border-radius: 4px;
+  border: 2px solid var(--bg-element);
+}
+
+/* Message collision */
+#message-collision {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--erreur);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+  z-index: 10;
+}
+#message-collision.visible { opacity: 1; }
+
+/* --- Panneau de contrôle ---------------------------- */
+#panneau-controle {
+  width: 210px;
+  flex-shrink: 0;
+  background: var(--bg-secondaire);
+  border-radius: var(--rayon);
+  padding: 14px;
+  box-shadow: var(--ombre);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.titre-section {
+  font-size: 0.78rem;
+  font-weight: bold;
+  color: var(--texte-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--bg-element);
+}
+
+/* Vitesse */
+.groupe-controle label {
+  font-size: 0.82rem;
+  color: var(--texte-dim);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.ligne-slider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ligne-slider input[type="range"] {
+  flex: 1;
+  accent-color: var(--couleur-robot);
+}
+
+#valeur-vitesse {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: var(--couleur-robot);
+  min-width: 32px;
+  text-align: right;
+}
+
+/* Pavé directionnel */
+#pave-directionnel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.ligne-pave {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-dir {
+  width: 58px;
+  height: 58px;
+  background: var(--bg-element);
+  color: var(--texte);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: background 0.12s, transform 0.1s;
+  box-shadow: var(--ombre);
+  user-select: none;
+}
+
+.btn-dir .icone { font-size: 1.3rem; line-height: 1; }
+.btn-dir .lbl   { font-size: 0.52rem; color: var(--texte-dim); }
+
+.btn-dir:hover        { background: var(--couleur-robot); color: #000; }
+.btn-dir:hover .lbl   { color: #000; }
+.btn-dir.actif        { background: var(--accent); transform: scale(0.94); }
+
+.btn-centre           { background: #2a1020; }
+.btn-centre:hover     { background: var(--accent); color: white; }
+
+/* Bouton réinitialiser */
+#btn-reinitialiser {
+  width: 100%;
+  padding: 9px;
+  background: var(--bg-element);
+  color: var(--texte);
+  border: none;
+  border-radius: var(--rayon);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+#btn-reinitialiser:hover { background: var(--avertissement); color: #000; }
+
+/* Aide clavier */
+#aide-clavier {
+  font-size: 0.74rem;
+  color: var(--texte-dim);
+  background: var(--bg-element);
+  padding: 8px 10px;
+  border-radius: 6px;
+  line-height: 1.6;
+}
+#aide-clavier strong { display: block; margin-bottom: 3px; }
+#aide-clavier ul { list-style: none; padding-left: 4px; }
+
+/* --- Console de commandes --------------------------- */
+#zone-console {
+  background: var(--bg-secondaire);
+  border-radius: var(--rayon);
+  padding: 10px;
+  box-shadow: var(--ombre);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  min-height: 200px;
+}
+
+#editeur-commandes,
+#sortie-console {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+#zone-saisie {
+  flex: 1;
+  min-height: 130px;
+  background: #080818;
+  color: #7ec8e3;
+  border: 1px solid var(--bg-element);
+  border-radius: 4px;
+  padding: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.88rem;
+  resize: vertical;
+  outline: none;
+  line-height: 1.7;
+  tab-size: 2;
+}
+#zone-saisie:focus { border-color: var(--couleur-robot); }
+
+#boutons-console {
+  display: flex;
+  gap: 6px;
+}
+
+#boutons-console button {
+  flex: 1;
+  padding: 8px 6px;
+  border: none;
+  border-radius: var(--rayon);
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: bold;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+#btn-executer      { background: var(--succes);  color: white; flex: 2; }
+#btn-executer:hover { background: #43a047; }
+#btn-executer:disabled { opacity: 0.5; cursor: not-allowed; }
+
+#btn-arreter-exec  { background: var(--accent); color: white; }
+#btn-arreter-exec:disabled { opacity: 0.4; cursor: not-allowed; }
+
+#btn-effacer       { background: var(--bg-element); color: var(--texte); }
+#btn-effacer:hover { background: var(--accent); color: white; }
+
+/* Journal de sortie */
+#log-console {
+  height: 160px;
+  max-height: 160px;
+  background: #080818;
+  border: 1px solid var(--bg-element);
+  border-radius: 4px;
+  padding: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.log-info        { color: var(--texte-dim); }
+.log-commande    { color: var(--couleur-robot); }
+.log-succes      { color: var(--succes); }
+.log-erreur      { color: var(--erreur); }
+.log-avertissement { color: var(--avertissement); }
+
+#btn-vider-log {
+  align-self: flex-end;
+  padding: 4px 10px;
+  background: var(--bg-element);
+  color: var(--texte-dim);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.78rem;
+}
+#btn-vider-log:hover { background: var(--accent); color: white; }
+
+/* --- Vue de face ----------------------------------- */
+#zone-face {
+  background: var(--bg-secondaire);
+  border-radius: var(--rayon);
+  padding: 10px 14px;
+  box-shadow: var(--ombre);
+}
+
+#contenu-face {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-top: 8px;
+}
+
+#canvas-face {
+  display: block;
+  border-radius: 4px;
+  border: 2px solid var(--bg-element);
+  flex-shrink: 0;
+}
+
+#controles-face {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#controles-face .titre-section { margin-bottom: 6px; }
+
+.boutons-face {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.btn-action {
+  padding: 6px 12px;
+  background: var(--bg-element);
+  color: var(--texte);
+  border: none;
+  border-radius: var(--rayon);
+  cursor: pointer;
+  font-size: 0.82rem;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.btn-action:hover { background: var(--couleur-robot); color: #000; }
+
+#valeur-bras-gauche,
+#valeur-bras-droit {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: var(--couleur-robot);
+  min-width: 36px;
+  text-align: right;
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulateur de Robot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- En-tête -->
+  <header>
+    <h1>🤖 Simulateur de Robot</h1>
+    <div id="statut-robot">
+      <span id="info-position">X: 280 | Y: 200</span>
+      <span id="info-angle">Angle: 0°</span>
+      <span id="info-vitesse">Vitesse: 50%</span>
+    </div>
+  </header>
+
+  <!-- Zone principale : simulation + contrôles -->
+  <main>
+
+    <!-- Vue de dessus (canvas) -->
+    <section id="zone-simulation">
+      <div class="titre-section">🗺️ Vue de dessus</div>
+      <div id="conteneur-canvas">
+        <canvas id="canvas-dessus"></canvas>
+        <div id="message-collision">⚠️ Collision avec le mur !</div>
+      </div>
+    </section>
+
+    <!-- Panneau de contrôle -->
+    <aside id="panneau-controle">
+      <div class="titre-section">🎮 Contrôles</div>
+
+      <!-- Vitesse -->
+      <div class="groupe-controle">
+        <label>Vitesse :</label>
+        <div class="ligne-slider">
+          <input type="range" id="slider-vitesse" min="1" max="100" value="50">
+          <span id="valeur-vitesse">50%</span>
+        </div>
+      </div>
+
+      <!-- Pavé directionnel -->
+      <div id="pave-directionnel">
+        <div class="ligne-pave">
+          <button class="btn-dir" id="btn-avancer" title="Avancer (↑)">
+            <span class="icone">▲</span>
+            <span class="lbl">Avancer</span>
+          </button>
+        </div>
+        <div class="ligne-pave">
+          <button class="btn-dir" id="btn-gauche" title="Tourner gauche (←)">
+            <span class="icone">◄</span>
+            <span class="lbl">Gauche</span>
+          </button>
+          <button class="btn-dir btn-centre" id="btn-arreter" title="Arrêter (Espace)">
+            <span class="icone">⏹</span>
+            <span class="lbl">Stop</span>
+          </button>
+          <button class="btn-dir" id="btn-droite" title="Tourner droite (→)">
+            <span class="icone">►</span>
+            <span class="lbl">Droite</span>
+          </button>
+        </div>
+        <div class="ligne-pave">
+          <button class="btn-dir" id="btn-reculer" title="Reculer (↓)">
+            <span class="icone">▼</span>
+            <span class="lbl">Reculer</span>
+          </button>
+        </div>
+      </div>
+
+      <button id="btn-reinitialiser">🔄 Réinitialiser</button>
+
+      <div id="aide-clavier">
+        <strong>⌨️ Clavier :</strong>
+        <ul>
+          <li>↑ / ↓ : avancer / reculer</li>
+          <li>← / → : tourner</li>
+          <li>Espace : arrêter</li>
+        </ul>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Vue de face du robot -->
+  <section id="zone-face">
+    <div class="titre-section">🤖 Vue de face</div>
+    <div id="contenu-face">
+      <canvas id="canvas-face"></canvas>
+      <div id="controles-face">
+
+        <div class="groupe-controle">
+          <div class="titre-section">👁 Yeux</div>
+          <div class="boutons-face">
+            <button class="btn-action" id="btn-cligner">😉 Cligner</button>
+            <button class="btn-action" id="btn-oeil-g-ouvert">Œil G. ouvert</button>
+            <button class="btn-action" id="btn-oeil-g-ferme">Œil G. fermé</button>
+            <button class="btn-action" id="btn-oeil-d-ouvert">Œil D. ouvert</button>
+            <button class="btn-action" id="btn-oeil-d-ferme">Œil D. fermé</button>
+          </div>
+        </div>
+
+        <div class="groupe-controle">
+          <div class="titre-section">💪 Bras</div>
+          <label>Bras gauche :</label>
+          <div class="ligne-slider">
+            <input type="range" id="slider-bras-gauche" min="-90" max="90" value="-90">
+            <span id="valeur-bras-gauche">-90°</span>
+          </div>
+          <label>Bras droit :</label>
+          <div class="ligne-slider">
+            <input type="range" id="slider-bras-droit" min="-90" max="90" value="-90">
+            <span id="valeur-bras-droit">-90°</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Console de commandes -->
+  <section id="zone-console">
+    <div id="editeur-commandes">
+      <div class="titre-section">💻 Commandes</div>
+      <textarea id="zone-saisie" spellcheck="false" placeholder="Entrez des commandes, une par ligne :
+avancer(100)
+tourner_droite(90)
+avancer(100)
+repeter(4) {
+  avancer(80)
+  tourner_gauche(90)
+}"></textarea>
+      <div id="boutons-console">
+        <button id="btn-executer">▶ Exécuter</button>
+        <button id="btn-arreter-exec" disabled>⏹ Arrêter</button>
+        <button id="btn-effacer">🗑 Effacer</button>
+      </div>
+    </div>
+    <div id="sortie-console">
+      <div class="titre-section">📋 Journal</div>
+      <div id="log-console">
+        <div class="log-info">Prêt. Utilisez les boutons ou saisissez des commandes.</div>
+      </div>
+      <button id="btn-vider-log">Vider le journal</button>
+    </div>
+  </section>
+
+  <!-- Scripts (ordre important) -->
+  <script src="js/robot.js"></script>
+  <script src="js/robot-face.js"></script>
+  <script src="js/room.js"></script>
+  <script src="js/renderer-top.js"></script>
+  <script src="js/renderer-front.js"></script>
+  <script src="js/interpreter.js"></script>
+  <script src="js/controls.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
