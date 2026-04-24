@@ -466,4 +466,38 @@ main {
   body[data-onglet="commandes"] #panneau-controle { display: none; }
   body[data-onglet="commandes"] #zone-console     { display: grid; }
 
+  /* ---- Zone Commandes agrandie sur mobile ---- */
+
+  /* Plus de place pour le textarea */
+  body[data-onglet="commandes"] #zone-saisie {
+    min-height: 220px;
+    height: 32vh;
+    resize: none;
+  }
+
+  /* Journal sans hauteur fixe : déborde sous la ligne de flotaison */
+  body[data-onglet="commandes"] #log-console {
+    height: auto;
+    max-height: none;
+    min-height: 100px;
+  }
+
+  /* Boutons Exécuter/Arrêter/Effacer collés en bas de l'écran */
+  body[data-onglet="commandes"] #boutons-console {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 12px;
+    background: var(--bg-secondaire);
+    border-top: 1px solid var(--bg-element);
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.5);
+    z-index: 200;
+  }
+
+  /* Espace en bas pour ne pas cacher le contenu derrière les boutons fixes */
+  body[data-onglet="commandes"] #zone-console {
+    padding-bottom: 72px;
+  }
+
 }
