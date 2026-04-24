@@ -464,22 +464,45 @@ main {
 
   /* Onglet Commandes actif → panneau caché, console visible */
   body[data-onglet="commandes"] #panneau-controle { display: none; }
-  body[data-onglet="commandes"] #zone-console     { display: grid; }
 
-  /* ---- Zone Commandes agrandie sur mobile ---- */
+  /* ---- Zone Commandes : remplit tout l'espace disponible (pur CSS) ---- */
 
-  /* Plus de place pour le textarea */
-  body[data-onglet="commandes"] #zone-saisie {
-    min-height: 220px;
-    height: 32vh;
-    resize: none;
+  /* Body en hauteur fixe pour que flex puisse tout calculer */
+  body[data-onglet="commandes"] {
+    height: 100dvh;
+    overflow: hidden;
   }
 
-  /* Journal sans hauteur fixe : déborde sous la ligne de flotaison */
-  body[data-onglet="commandes"] #log-console {
-    height: auto;
-    max-height: none;
-    min-height: 100px;
+  /* Vue de face cachée : inutile dans cette vue */
+  body[data-onglet="commandes"] #zone-face { display: none; }
+
+  /* Zone console prend tout l'espace restant dans le flex column */
+  body[data-onglet="commandes"] #zone-console {
+    display: flex !important;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    padding-bottom: 0;
+  }
+
+  /* L'éditeur occupe toute la zone console */
+  body[data-onglet="commandes"] #editeur-commandes {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Journal caché — la textarea doit remplir tout l'espace */
+  body[data-onglet="commandes"] #sortie-console { display: none; }
+
+  /* Textarea s'étire pour remplir l'editeur, avec marge pour les boutons fixes */
+  body[data-onglet="commandes"] #zone-saisie {
+    flex: 1;
+    min-height: 0;
+    height: 0;          /* laisse flex contrôler la hauteur */
+    padding-bottom: 67px; /* espace pour les boutons fixés */
+    resize: none;
   }
 
   /* Boutons Exécuter/Arrêter/Effacer collés en bas de l'écran */
@@ -493,11 +516,6 @@ main {
     border-top: 1px solid var(--bg-element);
     box-shadow: 0 -3px 10px rgba(0,0,0,0.5);
     z-index: 200;
-  }
-
-  /* Espace en bas pour ne pas cacher le contenu derrière les boutons fixes */
-  body[data-onglet="commandes"] #zone-console {
-    padding-bottom: 72px;
   }
 
 }
