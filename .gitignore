@@ -1,0 +1,5 @@
+# Captures Playwright (tests/débogage)
+.playwright-mcp/
+
+# Fichiers système macOS
+.DS_Store
