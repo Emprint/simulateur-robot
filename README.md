@@ -6,7 +6,7 @@ Application web interactive pour simuler un robot à roues, conçue pour tester 
 
 ---
 
-![Capture du simulateur – étoile tracée par le robot](screenshot-demo.png)
+![Capture du simulateur – spirale tracée par le robot](demo-spirale.png)
 
 ---
 
