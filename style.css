@@ -383,3 +383,41 @@ main {
   min-width: 36px;
   text-align: right;
 }
+
+/* ===================================================
+   RESPONSIVE — Écrans ≤ 640px (smartphones)
+   =================================================== */
+@media (max-width: 640px) {
+
+  body { padding: 6px; gap: 6px; }
+
+  /* En-tête : titre + statut en colonne */
+  header { flex-direction: column; align-items: flex-start; gap: 6px; }
+  #statut-robot { flex-wrap: wrap; gap: 6px; }
+  #statut-robot span { font-size: 0.75rem; padding: 2px 7px; }
+
+  /* Zone principale : canvas au-dessus, contrôles en dessous */
+  main { flex-direction: column; }
+
+  /* Canvas de dessus : s'adapte à la largeur disponible */
+  #canvas-dessus { max-width: 100%; height: auto; }
+
+  /* Panneau contrôle : pleine largeur, disposition horizontale des boutons */
+  #panneau-controle { width: 100%; }
+
+  /* Aide clavier : inutile sur mobile */
+  #aide-clavier { display: none; }
+
+  /* Vue de face : canvas + contrôles en colonne */
+  #contenu-face { flex-direction: column; align-items: center; }
+  #canvas-face { max-width: 100%; height: auto; }
+  #controles-face { width: 100%; }
+  .boutons-face { justify-content: center; }
+
+  /* Console : une seule colonne */
+  #zone-console { grid-template-columns: 1fr; }
+
+  /* Agrandir les boutons de direction pour le toucher */
+  .btn-dir { width: 68px; height: 68px; }
+  .btn-dir .icone { font-size: 1.6rem; }
+}
