@@ -464,44 +464,14 @@ main {
 
   /* Onglet Commandes actif → panneau caché, console visible */
   body[data-onglet="commandes"] #panneau-controle { display: none; }
+  body[data-onglet="commandes"] #zone-console     { display: grid; }
 
-  /* ---- Zone Commandes : remplit tout l'espace disponible (pur CSS) ---- */
+  /* ---- Zone Commandes agrandie sur mobile ---- */
 
-  /* Body en hauteur fixe pour que flex puisse tout calculer */
-  body[data-onglet="commandes"] {
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  /* Vue de face cachée : inutile dans cette vue */
-  body[data-onglet="commandes"] #zone-face { display: none; }
-
-  /* Zone console prend tout l'espace restant dans le flex column */
-  body[data-onglet="commandes"] #zone-console {
-    display: flex !important;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-    padding-bottom: 0;
-  }
-
-  /* L'éditeur occupe toute la zone console */
-  body[data-onglet="commandes"] #editeur-commandes {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-  }
-
-  /* Journal caché — la textarea doit remplir tout l'espace */
-  body[data-onglet="commandes"] #sortie-console { display: none; }
-
-  /* Textarea s'étire pour remplir l'editeur, avec marge pour les boutons fixes */
+  /* Textarea sans resize ; hauteur calculée par JS pour remplir le viewport */
   body[data-onglet="commandes"] #zone-saisie {
-    flex: 1;
-    min-height: 0;
-    height: 0;          /* laisse flex contrôler la hauteur */
-    padding-bottom: 67px; /* espace pour les boutons fixés */
+    /* min-height de secours si le JS tarde; le JS ajuste ensuite à la valeur exacte */
+    min-height: 35vh;
     resize: none;
   }
 
@@ -516,6 +486,11 @@ main {
     border-top: 1px solid var(--bg-element);
     box-shadow: 0 -3px 10px rgba(0,0,0,0.5);
     z-index: 200;
+  }
+
+  /* Espace en bas pour que le journal ne soit pas masqué par les boutons fixes */
+  body[data-onglet="commandes"] #zone-console {
+    padding-bottom: 72px;
   }
 
 }

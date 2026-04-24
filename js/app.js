@@ -57,13 +57,35 @@ const App = {
 
   /* Initialise les onglets mobiles (Contrôles / Commandes) */
   initOnglets() {
+    /* Deux rAF : le 1er laisse le navigateur recalculer le layout
+       après display:none → grid, le 2nd mesure les positions exactes */
+    const ajuster = () =>
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => this._ajusterZoneCommandes()));
+
     document.querySelectorAll('#onglets-mobile .onglet').forEach(btn => {
       btn.addEventListener('click', function () {
         document.querySelectorAll('#onglets-mobile .onglet').forEach(b => b.classList.remove('actif'));
         this.classList.add('actif');
         document.body.dataset.onglet = this.dataset.onglet;
+        ajuster();
       });
     });
+
+    window.addEventListener('resize', ajuster);
+  },
+
+  /* Ajuste la hauteur du textarea pour remplir le viewport jusqu'aux boutons.
+     Le journal (#sortie-console) déborde en dessous et est accessible par scroll. */
+  _ajusterZoneCommandes() {
+    if (window.innerWidth > 640) return;
+    if (document.body.dataset.onglet !== 'commandes') return;
+
+    const textarea = document.getElementById('zone-saisie');
+    const boutons  = document.getElementById('boutons-console');
+    const top      = textarea.getBoundingClientRect().top;
+    const hauteur  = window.innerHeight - top - boutons.offsetHeight - 12;
+    textarea.style.height = Math.max(hauteur, 150) + 'px';
   },
 
   /* Initialise les contrôles de la vue de face */
