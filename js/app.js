@@ -11,6 +11,7 @@ const App = {
     RendererFront.init('canvas-face');
     Controls.init();
     this.initFace();
+    this.initOnglets();
     this.mettreAJourStatut();
   },
 
@@ -52,6 +53,17 @@ const App = {
   mettreAJourBoutonsConsole(enExecution) {
     document.getElementById('btn-executer').disabled    =  enExecution;
     document.getElementById('btn-arreter-exec').disabled = !enExecution;
+  },
+
+  /* Initialise les onglets mobiles (Contrôles / Commandes) */
+  initOnglets() {
+    document.querySelectorAll('#onglets-mobile .onglet').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('#onglets-mobile .onglet').forEach(b => b.classList.remove('actif'));
+        this.classList.add('actif');
+        document.body.dataset.onglet = this.dataset.onglet;
+      });
+    });
   },
 
   /* Initialise les contrôles de la vue de face */

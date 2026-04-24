@@ -384,6 +384,9 @@ main {
   text-align: right;
 }
 
+/* Barre d'onglets mobile (cachée sur desktop) */
+#onglets-mobile { display: none; }
+
 /* ===================================================
    RESPONSIVE — Écrans ≤ 640px (smartphones)
    =================================================== */
@@ -420,4 +423,47 @@ main {
   /* Agrandir les boutons de direction pour le toucher */
   .btn-dir { width: 68px; height: 68px; }
   .btn-dir .icone { font-size: 1.6rem; }
+
+  /* ---- Onglets mobiles ---- */
+  #onglets-mobile {
+    display: flex;
+    order: 2;
+    gap: 4px;
+    padding: 4px;
+    background: var(--bg-secondaire);
+    border-radius: var(--rayon);
+    box-shadow: var(--ombre);
+  }
+
+  .onglet {
+    flex: 1;
+    padding: 12px 6px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--texte-dim);
+    font-size: 0.92rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .onglet.actif {
+    background: var(--bg-element);
+    color: var(--couleur-robot);
+  }
+
+  /* Réordonnancement vertical sur mobile */
+  main          { order: 1; }
+  #zone-console { order: 3; }
+  #zone-face    { order: 4; }
+
+  /* Onglet Contrôles actif → panneau visible, console cachée */
+  body[data-onglet="controles"] #panneau-controle { display: flex; }
+  body[data-onglet="controles"] #zone-console     { display: none; }
+
+  /* Onglet Commandes actif → panneau caché, console visible */
+  body[data-onglet="commandes"] #panneau-controle { display: none; }
+  body[data-onglet="commandes"] #zone-console     { display: grid; }
+
 }
